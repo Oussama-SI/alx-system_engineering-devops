@@ -1,0 +1,2 @@
+#!/bin/bash
+chown --col " StarWars IV" stuff_hello
