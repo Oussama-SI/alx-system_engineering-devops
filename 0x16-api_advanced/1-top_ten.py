@@ -1,22 +1,30 @@
 #!/usr/bin/python3
-"""Contains top_ten function"""
+"""Module that represents a function to return top 10 posts"""
 import requests
 
 
 def top_ten(subreddit):
-    """Print the titles of the 10 hottest posts on a given subreddit."""
-    url = "https://www.reddit.com/r/{}/hot/.json".format(subreddit)
-    headers = {
-        "User-Agent": "0x16-api_advanced:project:\
-v1.0.0 (by /u/firdaus_cartoon_jr)"
-    }
-    params = {
-        "limit": 10
-    }
-    response = requests.get(url, headers=headers, params=params,
-                            allow_redirects=False)
-    if response.status_code == 404:
-        print("None")
-        return
-    results = response.json().get("data")
-    [print(c.get("data").get("title")) for c in results.get("children")]
+    """
+    Function that prints the first 10 hot posts listed for
+    a given subreddit
+    subreddit: the given subreddit
+    """
+    url = f'https://www.reddit.com/r/{subreddit}/hot.json?limit=10'
+    headers = {'User-Agent': 'Mozzila/5.0'}
+
+    try:
+        response = requests.get(url, headers=headers, allow_redirects=False)
+
+        if response.status_code == 200:
+            data = response.json()
+            posts = data.get('data', {}).get('children', [])
+
+            if posts:
+                for post in posts:
+                    print(post['data']['title'])
+            else:
+                print(None)
+        else:
+            print(None)
+    except resuests.ResuestException as e:
+        print(None)
